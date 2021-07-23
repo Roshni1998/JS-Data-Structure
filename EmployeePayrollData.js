@@ -1,4 +1,4 @@
-// UC-12 Extend Employee Payroll Class
+// UC-13 Use RegEx for Name and Throw Error 
 class EmployeePayrollData {
 	// property
 	id;
@@ -17,23 +17,30 @@ class EmployeePayrollData {
 
 	// getter and setter method
 	get name () { return this._name; }
-	set name(name) { this._name = name; }
+	set name(name) {
+		let nameRegex = RegExp('^[A-Z]{1}[a-z]{3,}$');
+		if (nameRegex.test(name))
+			this._name = name;
+		else throw 'Name is Incorrect!';
+	}
 
 	// method
 	toString() {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-		const empDate = !this.startDate ? "undefined" : 
+		const options = { year: 'numeric', month: 'long', day: 'numeric' };
+		const empDate = this.startDate === undefined ? "undefined" : 
 		                this.startDate.toLocaleDateString("en-US", options);
-
 		return "id = " + this.id + ", name = " + this.name + ", salary = " + this.salary + ", "+
-		       "gender = " + this.gender + ", startDate = " + this.startDate;
+		       "gender = " + this.gender + ", startDate = " + empDate;
 	}
 }
 
 let employeePayrollData = new EmployeePayrollData(1, "Mark", 300000);
 console.log(employeePayrollData.toString());
-employeePayrollData.name = "john";
-console.log(employeePayrollData.toString());
+try {
+	employeePayrollData.name = "John";
+    console.log(employeePayrollData.toString());
+} catch (e) {
+	console.error(e);
+}
 let newEmployeePayrollData = new EmployeePayrollData(1, "Terrisa", 400000, "F", new Date());
 console.log(newEmployeePayrollData.toString());
-
