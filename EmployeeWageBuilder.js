@@ -5,6 +5,8 @@ const IS_FULL_TIME = 2;
 const PART_TIME_HOURS = 4;
 const FULL_TIME_HOURS = 8;
 const WAGE_PER_HOUR = 20;
+const MAX_HRS_IN_MONTH = 100;
+const NUM_OF_WORKING_DAYS = 10;
 
 // UC-3
 // Refactor the code to write a function to get work hours
@@ -19,18 +21,31 @@ function getWorkingHours(empCheck) {
 	}
 }
 
-// UC-5
-// Calculating Wages till Number of Working Days or Total Working Hours per month is Reached
+// UC-6
+// Refactor the code to write a function to calculate the daily wage
+function calcDailywage(empHrs) {
+	return empHrs * WAGE_PER_HOUR;
+}
 
-const MAX_HRS_IN_MONTH = 100;
-const NUM_OF_WORKING_DAYS = 10;
 let totalEmpHrs = 0;
 let totalWorkingDays = 0;
+let empDailyHrsAndWageArr = new Array();
 while (totalEmpHrs <= MAX_HRS_IN_MONTH && totalWorkingDays < NUM_OF_WORKING_DAYS) {
 	totalWorkingDays++;
 	let empCheck = Math.floor(Math.random() * 10) % 3;
-	totalEmpHrs += getWorkingHours(empCheck);
+	let empHrs = getWorkingHours(empCheck);
+	totalEmpHrs += empHrs;
+	empDailyHrsAndWageArr.push(
+		{
+			dayNum : totalWorkingDays,
+			dailyHours : empHrs,
+			dailyWage : calcDailywage(empHrs),
+			toString() {
+				return '\nDay' + this.dayNum + ' => Working Hours is ' + this.dailyHours +
+				       ' And Wage Earned = ' + this.dailyWage
+			},
+		});
 }
-let empWage = totalEmpHrs * WAGE_PER_HOUR;
-console.log("UC5 - Total Days : " + totalWorkingDays + ", Total Hrs : " + totalEmpHrs + ", Emp Wage : " + empWage);
- 
+
+let empWage = calcDailywage(totalEmpHrs);
+console.log("UC6 - Total Days: " + totalWorkingDays + ", Total Hrs: " + totalEmpHrs + ", Emp Wage: " + empWage);
